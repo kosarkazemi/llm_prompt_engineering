@@ -1,127 +1,111 @@
-# Product-Extra
-Test ML Software Engineer for Akeneo
+# LLM prompt Engineering
 
 ## Product Extraction API Documentation
 
-Welcome to the Product Extraction API! This API provides a service to extract specified fields from a given list of products using a Language Model. It utilizes Flask, a popular Python web framework, to handle incoming HTTP requests.
+
+Welcome to the Product Extraction API! This API leverages Large Language Models (LLMs) for advanced field extraction from product descriptions. The API is built using Flask to handle HTTP requests and is designed to work with state-of-the-art LLMs like LLaMA and a custom model, CameLLM.
+
 
 ### Introduction
 
-This API allows you to extract specific fields from a list of products using a language model. Follow the instructions below to set up the environment using Docker and Poetry.
+
+The Product Extraction API is centered around utilizing LLMs to extract specific fields from product descriptions. This README will guide you through the setup and provide an overview of how prompt engineering and LLMs are employed to enhance the model's ability to parse and extract relevant information from text.
+
+
+### Core Features and Focus
+
+
+Our API integrates the latest advancements in prompt engineering and Chain of Thought (CoT) techniques to improve LLM comprehension and extraction accuracy. By carefully designing prompts, the API maximizes the effectiveness of LLaMA and CameLLM in extracting attributes like length, weight, color, etc., from complex product descriptions.
+
+
+#### Chain of Thought Prompting
+
+
+Chain of Thought prompting is a technique that guides the LLM step-by-step through reasoning, enhancing its ability to arrive at the correct answer. This method is particularly effective in scenarios where the LLM needs to perform calculations or follow logical steps to derive the correct information.
+
+
+![Chain of Thought Example](chain_of_thought_example-ad98abdca61405f66417751bdb3fba05.webp)
+
+
+*The image above illustrates how Chain of Thought prompting aids in breaking down the problem into manageable steps, improving model accuracy.*
+
 
 ### Getting Started
 
+
 #### Installation Instructions
 
+
 1. **Install Docker:**
-   Ensure you have Docker installed on your system. Docker is a containerization platform that simplifies deployment and dependencies.
+   Ensure Docker is installed on your system. Docker is used for containerization, simplifying deployment and dependencies.
    - [Docker Installation Guide](https://docs.docker.com/get-docker/)
 
+
 2. **Clone the Repository:**
-   Clone the repository containing the API code to your local machine.
    ```bash
    git clone https://github.com/kosarkazemi/Product-Extra.git
    cd Product-Extra
    ```
 
+
 3. **Install Poetry:**
-   Poetry is a tool for dependency management and packaging in Python. It allows you to manage project dependencies and create a virtual environment.
+   Poetry is used for dependency management and environment setup.
    - [Poetry Installation Guide](https://python-poetry.org/docs/)
 
+
 4. **Install Dependencies:**
-   Use Poetry to install the project dependencies.
    ```bash
    poetry install
    ```
 
+
 5. **Build and Run the Docker Image:**
-   Build the Docker image from the provided Dockerfile and run the API inside a Docker container.
    ```bash
    docker build -t product_extraction_api .
    docker run -p 5001:5000 product_extraction_api
    ```
-   The API will now be running and accessible at `http://0.0.0.0:5001`.
+   The API will be accessible at `http://0.0.0.0:5001`.
 
-### API Endpoints
 
-1. **`GET /`**
+### API Endpoints Overview
 
-   This endpoint provides a welcome message to users accessing the root URL of the API.
-   
-   **Request:**
-   ```plaintext
-   GET /
-   ```
 
-   **Response:**
-   ```json
-   {
-     "message": "Welcome to the product extraction API!"
-   }
-   ```
+While the focus of this project is on LLM and prompt engineering, the API exposes several endpoints to interact with the models:
 
-2. **`POST /extract_fields`**
 
-   This endpoint extracts specified fields from a list of products using a language model.
+1. **`GET /`**: Returns a welcome message.
+2. **`POST /extract_fields`**: Extracts specified fields from products using the selected LLM.
 
-   **Request:**
-   - Method: `POST`
-   - Body:
-     ```json
-     {
-       "products": [
-         {
-           "Titre": "Baignoire d'angle Geberit Bastia: 142x142cm",
-           "Description": "BAIG ANGL BASTIA 142X142",
-           "LIBL_LIBELLE": "Baignoire d'angle Geberit Bastia avec pieds: 142x142cm",
-           "Argumentaire Produit": "Poignes en option",
-           "fields_to_extract": ["EF000040"]
-         }
-       ],
-       "model": "LLaMA"
-     }
-     ```
 
-   **Response:**
-   ```json
-   [
-     {
-       "product": 
-         {
-           "Titre": "Baignoire d'angle Geberit Bastia: 142x142cm",
-           "Description": "BAIG ANGL BASTIA 142X142",
-           "LIBL_LIBELLE": "Baignoire d'angle Geberit Bastia avec pieds: 142x142cm",
-           "Argumentaire Produit": "Poignes en option",
-           "fields_to_extract": ["EF000040"]
-         },
-       "fields": [
-         {
-           "field_name": "EF000040",
-           "field_value": "Answer LLaMA"
-         }
-       ]
-     }
-   ]
-   ```
+For a detailed guide on API usage and interaction, refer to the provided examples or use a tool like Postman.
 
-### Usage
 
-- **Access the API:**
-  Use a tool like Postman or send HTTP requests programmatically to the specified endpoints.
+### Usage and Examples
 
-- **Run the client.py Script:**
-  Execute the client.py script by running it with Python. This script will send a POST request to the API, extract specified fields from the provided data, and display the response. Use the following command:
-  ```bash
-  python client.py
-  ```
-  This script will display the payload being sent, the response status code, and the response JSON, allowing you to verify the interaction with the API and the extracted fields.
 
-## Next Steps
+- **Access the API:** You can use tools like Postman or programmatically send HTTP requests to the API endpoints.
+- **Run the client.py Script:** This script demonstrates how to send a POST request to the API and receive extracted fields.
+
+
+### Advanced Prompt Engineering Techniques
+
+
+In this project, LLMs are prompted with specific templates that include a system prompt and user messages, optimized to adhere to the character length constraints for each model:
+- **LLaMA prompt:** max 4096 characters
+- **CameLLM prompt:** max 2048 characters
+
+
+These prompts are designed to enhance the model's extraction capabilities by providing clear, concise instructions and examples that guide the model's output.
+
+
+### Next Steps
+
 
 1. **Diverse Examples for Better Understanding:**
-   Include a variety of examples from different fields to improve the model's comprehension and extraction accuracy.
+   Provide varied examples to improve the model's comprehension across different product domains.
+
 
 2. **Tailored Prompts for Each Product Aspect:**
-   Create customized prompts specific to each product's attributes to enhance field extraction precision.
+   Develop specific prompts for different product attributes to refine field extraction further.
 
-Let's proceed with these steps to enhance the API's performance in extracting fields from product descriptions.
+
